@@ -1,6 +1,6 @@
-# Notion Database API Uploader
+# Python Client for Notion API (`notion-client-py`)
 
-This project automates the process of creating new pages in a Notion database, populating page properties, and uploading images as page content using a Python script. It's designed to easily record and manage structured data in Notion, such as machine learning experiment results or data analysis reports.
+A simple and powerful Python client for the Notion API. This project automates creating new pages in a Notion database, populating page properties, and uploading images as page content. It's designed to easily record and manage structured data in Notion, such as machine learning experiment results or data analysis reports.
 
 ![Project Demo](https://user-images.githubusercontent.com/74236661/252056147-66d3fdc7-6bc5-4212-b312-30b0213dc471.png)
 
@@ -35,17 +35,18 @@ This project automates the process of creating new pages in a Notion database, p
 
 ### How to Use
 
-#### 1. Create a NotionDatabase Object
+#### 1. Create a NotionClient Object
 
-Import the `NotionDatabase` class from `upload_notion.py` and create an object using your API key and database ID.
+Assuming the project folder is named `notion_client_py`, you can import the `NotionClient` class.
 
 ```python
-from upload_notion import NotionDatabase
+from notion_client_py import NotionClient
 
 DATABASE_ID = "<Your Database ID>"
 NOTION_KEY = "<Your Notion API Secret Key>"
 
-notion_db = NotionDatabase(DATABASE_ID, NOTION_KEY)
+# Create a client instance
+notion_client = NotionClient(DATABASE_ID, NOTION_KEY)
 ```
 
 #### 2. (Optional) Check Database Properties
@@ -55,7 +56,7 @@ You can use the `print_property_dict()` method to display the names and types of
 > **Note**: To retrieve property information, the database must contain at least one page.
 
 ```python
-notion_db.print_property_dict()
+notion_client.print_property_dict()
 ```
 
 **Example Output:**
@@ -78,7 +79,7 @@ Prepare the data for the page properties as a Python dictionary. The dictionary 
 
 ```python
 # Convert date to the format required by the Notion API
-execution_date = notion_db.transform_date("20250918153000") # "YYYYMMDDHHMMSS"
+execution_date = notion_client.transform_date("20250918153000") # "YYYYMMDDHHMMSS"
 
 # Data for the page properties
 page_data = {
@@ -95,20 +96,20 @@ page_data = {
 }
 ```
 
-#### 4. Upload the Page and Content
+#### 4. Create the Page and Upload Content
 
-Use the `upload_page()` method to upload the data. To add images as content to the page, pass a file path to the `image_file_path` argument.
+Use the `create_page()` method to upload the data. To add images as content to the page, pass a file path to the `image_file_path` argument.
 
 **Example 1: Create a Page Only**
 
 ```python
-notion_db.upload_page(page_data)
+notion_client.create_page(page_data)
 ```
 
 **Example 2: Create a Page + Upload a Single Image**
 
 ```python
-notion_db.upload_page(
+notion_client.create_page(
     page_data,
     image_file_path="/path/to/your/result_graph.png"
 )
@@ -125,7 +126,7 @@ image_files = [
     "/path/to/precision_recall_curve.png"
 ]
 
-notion_db.upload_page(page_data, image_file_path=image_files)
+notion_client.create_page(page_data, image_file_path=image_files)
 ```
 
 ---
@@ -136,9 +137,9 @@ This project is licensed under the MIT License.
 ---
 <br>
 
-# Notion Database API Uploader
+# Notion API를 위한 Python 클라이언트 (`notion-client-py`)
 
-Python 스크립트를 사용하여 Notion 데이터베이스에 새로운 페이지를 생성하고, 페이지 속성 값을 채우며, 페이지 콘텐츠로 이미지를 업로드하는 작업을 자동화하는 프로젝트입니다. 머신러닝 실험 결과나 데이터 분석 리포트와 같이 정형화된 데이터를 Notion에 손쉽게 기록하고 관리할 수 있습니다.
+Notion API를 위한 간단하고 강력한 Python 클라이언트입니다. 이 프로젝트는 Notion 데이터베이스에 새로운 페이지를 생성하고, 페이지 속성 값을 채우며, 페이지 콘텐츠로 이미지를 업로드하는 작업을 자동화합니다. 머신러닝 실험 결과나 데이터 분석 리포트와 같이 정형화된 데이터를 Notion에 손쉽게 기록하고 관리할 수 있습니다.
 
 ![Project Demo](https://user-images.githubusercontent.com/74236661/252056147-66d3fdc7-6bc5-4212-b312-30b0213dc471.png)
 
@@ -171,17 +172,18 @@ Python 스크립트를 사용하여 Notion 데이터베이스에 새로운 페�
 
 ### 사용 방법
 
-#### 1. NotionDatabase 객체 생성
+#### 1. NotionClient 객체 생성
 
-`upload_notion.py`의 `NotionDatabase` 클래스를 임포트하고, API 키와 데이터베이스 ID로 객체를 생성합니다.
+프로젝트 폴더 이름이 `notion_client_py`라고 가정하고, `NotionClient` 클래스를 임포트합니다.
 
 ```python
-from upload_notion import NotionDatabase
+from notion_client_py import NotionClient
 
 DATABASE_ID = "<여러분의 데이터베이스 ID>"
 NOTION_KEY = "<여러분의 노션 API 시크릿 키>"
 
-notion_db = NotionDatabase(DATABASE_ID, NOTION_KEY)
+# 클라이언트 인스턴스 생성
+notion_client = NotionClient(DATABASE_ID, NOTION_KEY)
 ```
 
 #### 2. (선택) 데이터베이스 속성 확인
@@ -191,7 +193,7 @@ notion_db = NotionDatabase(DATABASE_ID, NOTION_KEY)
 > **주의**: 속성 정보를 가져오려면 데이터베이스에 최소 한 개 이상의 페이지가 존재해야 합니다.
 
 ```python
-notion_db.print_property_dict()
+notion_client.print_property_dict()
 ```
 
 **출력 예시:**
@@ -214,7 +216,7 @@ notion_db.print_property_dict()
 
 ```python
 # Notion API 형식에 맞게 날짜 변환
-execution_date = notion_db.transform_date("20250918153000") # "YYYYMMDDHHMMSS"
+execution_date = notion_client.transform_date("20250918153000") # "YYYYMMDDHHMMSS"
 
 # 페이지 속성에 들어갈 데이터
 page_data = {
@@ -231,20 +233,20 @@ page_data = {
 }
 ```
 
-#### 4. 페이지 및 콘텐츠 업로드
+#### 4. 페이지 생성 및 콘텐츠 업로드
 
-`upload_page()` 메서드를 사용하여 데이터를 업로드합니다. 페이지 콘텐츠로 이미지를 추가하고 싶다면 `image_file_path` 인자에 파일 경로를 전달하세요.
+`create_page()` 메서드를 사용하여 데이터를 업로드합니다. 페이지 콘텐츠로 이미지를 추가하고 싶다면 `image_file_path` 인자에 파일 경로를 전달하세요.
 
 **예시 1: 페이지만 생성**
 
 ```python
-notion_db.upload_page(page_data)
+notion_client.create_page(page_data)
 ```
 
 **예시 2: 페이지 생성 + 단일 이미지 업로드**
 
 ```python
-notion_db.upload_page(
+notion_client.create_page(
     page_data,
     image_file_path="/path/to/your/result_graph.png"
 )
@@ -261,7 +263,7 @@ image_files = [
     "/path/to/precision_recall_curve.png"
 ]
 
-notion_db.upload_page(page_data, image_file_path=image_files)
+notion_client.create_page(page_data, image_file_path=image_files)
 ```
 
 ---
